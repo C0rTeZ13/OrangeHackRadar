@@ -1,0 +1,2011 @@
+{
+  "name": "Finance News Radar",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://biggerpockets.com/blog/feed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -384,
+        -640
+      ],
+      "id": "84779ade-f351-4d75-849d-bc820feef615",
+      "name": "BiggerPockets.com"
+    },
+    {
+      "parameters": {
+        "url": "https://www.vedomosti.ru/rss/news",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -384,
+        -832
+      ],
+      "id": "19548c60-3123-47f8-a5e9-af91dbcba90e",
+      "name": "Vedomosti.ru"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger Start').item.json.message.chat.id }}",
+        "text": "📊 *Бот для поиска и анализа горячих финансовых новостей*\nДля анализа выберите временной промежуток.",
+        "replyMarkup": "replyKeyboard",
+        "replyKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "1 час",
+                    "additionalFields": {}
+                  },
+                  {
+                    "text": "5 часов",
+                    "additionalFields": {}
+                  },
+                  {
+                    "text": "12 часов",
+                    "additionalFields": {}
+                  }
+                ]
+              }
+            },
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "Сегодня",
+                    "additionalFields": {}
+                  },
+                  {
+                    "text": "Вчера",
+                    "additionalFields": {}
+                  },
+                  {
+                    "text": "На неделе",
+                    "additionalFields": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "replyKeyboardOptions": {
+          "resize_keyboard": true
+        },
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -832,
+        -224
+      ],
+      "id": "f5c2a32f-41d3-41c8-8a33-4c5a2b2d0b88",
+      "name": "Send Time Variants",
+      "webhookId": "4a33a422-5be5-4e21-9173-0b8c90e4c5d4",
+      "credentials": {
+        "telegramApi": {
+          "id": "qY1l1NcrKFDRHokc",
+          "name": "KizilRadarBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9e8aaa14-1e4c-478d-bcd9-26efd01da459",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "1 час",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "cea24ed0-6d89-4d60-87c1-3e0c502c5885",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "5 часов",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "4eb101fe-b12c-425c-9546-80f4200995a4",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "12 часов",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "98f8b2b0-877c-4b12-b0d1-5dd85a6c6392",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "Сегодня",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "fc495189-28b2-4da1-b356-e962fe80f01b",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "Вчера",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "8e1bc781-3b77-42c9-bb45-7c117cf0676a",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "На неделе",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1280,
+        -224
+      ],
+      "id": "1380372b-e5ca-47c0-84d9-8ed956f123b8",
+      "name": "If time"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6db27da3-c98d-4035-b598-8c8091c48311",
+              "leftValue": "={{ $json.message.text }}",
+              "rightValue": "/start",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1056,
+        -128
+      ],
+      "id": "a3bdd5ff-1007-4ade-976b-2e0a031ef5ba",
+      "name": "If /start"
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        2768,
+        -832
+      ],
+      "id": "fd48a4d4-22d1-45e0-be0e-c9e49345c509",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "dwy4CvjfeiziHkR0",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger Start').item.json.message.chat.id }}",
+        "text": "Для начала введите /start",
+        "replyMarkup": "replyKeyboard",
+        "replyKeyboard": {
+          "rows": [
+            {
+              "row": {
+                "buttons": [
+                  {
+                    "text": "/start",
+                    "additionalFields": {}
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "replyKeyboardOptions": {
+          "resize_keyboard": true
+        },
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -832,
+        -32
+      ],
+      "id": "b1ddc279-a38b-4fe3-ae67-ce200fe52268",
+      "name": "Start Message",
+      "webhookId": "a6f6760c-8264-4f37-81ad-7141c1a0f788",
+      "credentials": {
+        "telegramApi": {
+          "id": "qY1l1NcrKFDRHokc",
+          "name": "KizilRadarBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1504,
+        -224
+      ],
+      "id": "09a76557-a8f3-43b6-89a4-a82d75ad9ebf",
+      "name": "Telegram Trigger Start",
+      "webhookId": "5155da08-5bdd-4c26-9423-9f3d9fd1f6bb",
+      "credentials": {
+        "telegramApi": {
+          "id": "qY1l1NcrKFDRHokc",
+          "name": "KizilRadarBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const buttonText = $input.first().json.message.text\nconst now = new Date();\nlet startDate;\n\nswitch(buttonText) {\n  case \"1 час\":\n    startDate = new Date(now.getTime() - 60 * 60 * 1000);\n    break;\n    \n  case \"5 часов\":\n    startDate = new Date(now.getTime() - 5 * 60 * 60 * 1000);\n    break;\n\n  case \"12 часов\":\n    startDate = new Date(now.getTime() - 12 * 60 * 60 * 1000);\n    break;\n    \n  case \"Сегодня\":\n    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);\n    break;\n    \n  case \"Вчера\":\n    startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);\n    startDate.setHours(0, 0, 0, 0);\n    break;\n    \n  case \"На неделе\":\n    startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);\n    break;\n    \n  default:\n    startDate = now;\n}\n\nreturn {\n  startDate: startDate.toISOString()\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1056,
+        -416
+      ],
+      "id": "2c3eea49-6711-404d-926a-a29b7faa4e1d",
+      "name": "Convert Time"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"title\": \"...\",\n  \"hotness\": 0.000,\n  \"why_now\": \"...\",\n  \"entities\": {\n    \"companies\": [],\n    \"countries\": [],\n    \"sectors\": []\n  },\n  \"sources\": [\"...\"],\n  \"draft\": {\n    \"lead\": \"...\",\n    \"bullets\": [\n      \"...\",\n      \"...\",\n      \"...\"\n    ]\n  }\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2896,
+        -832
+      ],
+      "id": "86dd5631-028f-454c-9572-3b36b0353edc",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        2976,
+        -624
+      ],
+      "id": "92991b6f-b7ed-4425-8f60-2ca454db8e56",
+      "name": "Parser Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "dwy4CvjfeiziHkR0",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger Start').item.json.message.chat.id }}",
+        "text": "=*{{ $json.title }}*\n\n🔥 *Оценка \"горячести\": {{ $json.hotness }}*\n\n🕔 *Почему сейчас?*\n{{ $json.why_now }}\n\n🔑 *Ключевые сущности*\nКомпании: {{ $json.companies && $json.companies.length > 0 ? $json.companies : \"отсутствуют\" }}\nСтраны: {{ $json.countries && $json.countries.length > 0 ? $json.countries : \"отсутствуют\" }}\nСектора экономики: {{ $json.sectors && $json.sectors.length > 0 ? $json.sectors : \"отсутствуют\" }}\n\n🔗 *Ссылка на источник*\n{{ $json.link }}\n\nℹ️ *Черновик новости*\n*{{ $json.lead }}*\n\n{{ $json.bullet_1 }}. {{ $json.bullet_2 }}. {{ $json.bullet_3 }}.",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -352,
+        -464
+      ],
+      "id": "005efcb3-c59f-4578-99f6-42a8fbcb360f",
+      "name": "Send a text message Result",
+      "webhookId": "25b788cf-1a20-45c6-9517-70dedc510906",
+      "credentials": {
+        "telegramApi": {
+          "id": "qY1l1NcrKFDRHokc",
+          "name": "KizilRadarBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Ты — AI подготовщик горячих экономических новостей (финальный этап анализа).  \nНа вход подается JSON:\n{\n  \"title\": {{ $('Actual News').item.json.title }},\n  \"author\": {{ $('Actual News').item.json.newsCreator }},\n  \"publication_date\": {{ $('Actual News').item.json.newsDate }},\n  \"content\": {{ $json.output.content }},\n  \"url\": {{ $('Filter By Titles').item.json.newsLink }}\n}\n\nТвоя задача — строго проанализировать каждую новость по правилам ниже и вернуть структурированный результат в JSON-формате.\n\nПРАВИЛА АНАЛИЗА:\n1. Оценивай только предоставленные данные — title, content, author, publication_date, url. Не ищи дополнительную информацию.  \n2. Оценивай глобальное влияние новости на мировой рынок.  \n3. Не пропускай слухи, кликбейты, личные мнения или неподтверждённые данные.  \n4. Учитывай авторитетность источника: правительственные и экономические издания (Bloomberg, Reuters, FT, WSJ, Ведомости, РБК) считаются достоверными.  \n5. Учитывай макроэкономические показатели: изменение ВВП, инфляцию, ставки центробанков, рынок труда, производственную активность, розничные продажи, общую экономическую ситуацию.  \n6. Делай различие между тремя типами новостей:  \n   • \"macro\" — затрагивает экономику страны или мира,  \n   • \"sector\" — влияет на отрасль,  \n   • \"corporate\" — касается конкретной компании.  \n7. Определи горячесть новости (hotness) от 0.000 до 1.000 используя формулу hotness = w1 * Relevance(title, content) + w2 * SentimentStrength(title, content) + w3 * EventMagnitude(content) + w4 * SourceCredibility(author, url)\nГде:  \n   • Relevance(title, content) — степень упоминания конкретных компаний, отраслей или стран (0–1),  \n   • SentimentStrength(title, content) — сила позитивной или негативной окраски (0–1),  \n   • EventMagnitude(content) — важность события (макроэкономика > отрасль > компания) (0–1),  \n   • SourceCredibility(author, url) — надёжность источника (0–1),  \n   • w1=0.3, w2=0.2, w3=0.3, w4=0.2.\n\n8. Определи, почему новость актуальна сейчас (why_now) — 1–2 предложения с ключевыми фактами, цифрами или событиями из текста.  \n9. Определи сущности (entities):  \n   • companies — реальные компании, упомянутые в тексте,  \n   • countries — реальные страны (в правильной форме: Россия, США, Китай),  \n   • sectors — отрасли экономики (например, \"финансы\", \"нефть и газ\").  \n10. Поле sources должно содержать только действительные ссылки, включая входной url.  \n11. Все поля должны быть грамматически корректны и написаны на русском языке.  \n12. Если данных недостаточно для анализа — заполни поля максимально точно по контексту.\n\nВЫХОД:\n{\n  \"title\": \"...\",\n  \"hotness\": 0.000,\n  \"why_now\": \"...\",\n  \"entities\": {\n    \"companies\": [],\n    \"countries\": [],\n    \"sectors\": []\n  },\n  \"sources\": [\"...\"],        // включает входной url и при наличии до 4 авторитетных источников\n  \"draft\": {\n    \"lead\": \"...\",           // короткое вводное предложение\n    \"bullets\": [\n      \"...\",                 // три кратких тезиса, отражающих суть и последствия новости\n      \"...\",\n      \"...\"\n    ]\n  }\n}\nВозвращай только корректный JSON без пояснений и комментариев.",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2800,
+        -1056
+      ],
+      "id": "3ea2de56-3348-455e-b041-5aa4cbd09cdd",
+      "name": "AI Summarizer"
+    },
+    {
+      "parameters": {
+        "numberInputs": 6
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        64,
+        -1184
+      ],
+      "id": "d8d0e66a-23ca-4048-8163-0c5445000640",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5a5f14ee-991f-4195-85a9-4859f3e0633a",
+              "name": "newsCreator",
+              "value": "={{ $json.creator }}",
+              "type": "string"
+            },
+            {
+              "id": "0cf958df-37db-46f6-ac8e-d9b14f572197",
+              "name": "newsTitle",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "ba06d90c-1739-4aaa-957d-9e427b47add0",
+              "name": "newsLink",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "54922f64-572e-4ddb-8125-1d86336dfca0",
+              "name": "newsDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -832
+      ],
+      "id": "afe4746e-30fc-485f-9b04-9a0b6979b7ff",
+      "name": "Vedomosti"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e32ea03b-756e-4f1c-b035-eaa26e85f2ae",
+              "name": "newsCreator",
+              "value": "={{ $json.creator }}",
+              "type": "string"
+            },
+            {
+              "id": "b1fa9332-86db-402d-a963-57ffa1ffab7e",
+              "name": "newsTitle",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "7eecd305-d16f-454b-9914-0b9129d04e31",
+              "name": "newsLink",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "2d2bf67c-6fa6-4612-a3a0-e034bfa75e48",
+              "name": "newsDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -640
+      ],
+      "id": "a8c0d485-746e-4c62-994e-9a2c459e9ae6",
+      "name": "BiggerPockets"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Ты — профессиональный финансовый аналитик, который строго следует правилам фильтрации и ранжирования новостных заголовков.  \nТвоя задача — из входного массива `titles[]` (на русском языке) выбрать и вернуть только те заголовки, которые потенциально **влияют на мировые или крупные национальные рынки**, **надежны по формулировке** и **не содержат признаков слухов, мнений или кликбейта**.\n\n---\n\n### ПРАВИЛА ОБРАБОТКИ\n\n1. **Вход** — массив строк `titles[]`, каждый элемент — заголовок новости.\n2. **Выход** — массив строк `filtered_titles[]`, включающий только лучшие заголовки (на русском языке, без перевода).\n3. **Удалить дубликаты**:\n   - Дубликатом считаются заголовки, совпадающие по смыслу или содержащие одни и те же ключевые слова (названия компаний, событий, индикаторов).\n   - Оставь только один наиболее информативный и нейтральный вариант.\n4. **Оценивай каждый заголовок только по его тексту** — не используй внешние данные, контекст или ссылки.\n5. **Критерии исключения** — отклонить, если:\n   - заголовок содержит выражения неопределенности: «по слухам», «сообщается», «якобы», «возможно», «источники утверждают», «анонимный источник»;\n   - является кликбейтом: «что будет дальше», «вы не поверите», «шокирующая новость» и т.п.;\n   - выражает мнение: «эксперт считает», «аналитики полагают», «по мнению» (если нет конкретного факта);\n   - касается частных, незначительных событий (например, одного человека или малого бизнеса без отраслевого контекста);\n   - содержит эмоции, оценочные суждения, рекламу или сенсационность.\n\n6. **Критерии значимости (оценка влияния на рынок):**\n   - Сильное влияние (приоритет 1): новости о ВВП, инфляции, ставках центробанков, ключевых макроэкономических показателях, санкциях, геополитике, крупных сделках M&A, банкротствах системных компаний, изменениях политики крупных государств или регуляторов.\n   - Среднее влияние (приоритет 2): корпоративная отчетность, изменения в крупнейших компаниях или отраслях (энергетика, технологии, финансы, сырьё, транспорт).\n   - Низкое влияние (приоритет 3): локальные новости без масштабного экономического эффекта.\n7. **Учитывай авторитетность и масштаб формулировки**:\n   - Положительно оцени заголовки, содержащие указания на конкретные организации или страны: «ЦБ РФ», «ЕЦБ», «Минфин США», «ОПЕК», «МВФ», «Apple», «Газпром», «Сбербанк», «Tesla».\n   - Игнорируй заголовки без чётких субъектов («власти обсудили», «на рынке появились слухи»).\n\n8. **Результат отбора:**\n   - Оставь только заголовки, удовлетворяющие ≥2 критериям значимости и не нарушающие правила достоверности.\n   - Сортируй оставшиеся заголовки по приоритету влияния: сильное → среднее → низкое.\n   - Возвращай не более 20 лучших заголовков.\n\n---\n\n### ВЫХОДНОЙ ФОРМАТ\n\nВерни **только массив строк в JSON-формате**, без пояснений и метаданных.  \nКаждый элемент массива — строка с русским заголовком.\n\nTitles:\n{{ $json.newsTitle }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        992,
+        -880
+      ],
+      "id": "0be88b2e-325c-461c-b305-93e420942e6b",
+      "name": "AI Filter"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "newsTitle"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        736,
+        -880
+      ],
+      "id": "46515b8e-63ef-4cb7-b718-222189add40a",
+      "name": "Aggregate Titles"
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        960,
+        -656
+      ],
+      "id": "6c309386-357b-4d97-bbc9-f7955e09006c",
+      "name": "Filter Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "dwy4CvjfeiziHkR0",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        -448
+      ],
+      "id": "511be86d-0c1a-4d2b-ad8b-c4676f6f0d8b",
+      "name": "Filter Parser Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "dwy4CvjfeiziHkR0",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"titles\": [\n    {\n      \"title\": \"string\"\n    }\n  ]\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1088,
+        -656
+      ],
+      "id": "acb9dbba-2011-4427-92be-3462069b28c7",
+      "name": "Structured Output Title Parser"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.titles",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1456,
+        -880
+      ],
+      "id": "150f34de-2ebc-4f2f-b6c0-cc385995b73a",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "mode": "combineBySql",
+        "query": "SELECT * FROM input1 INNER JOIN input2 ON input1.newsTitle = input2.title",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1680,
+        -1056
+      ],
+      "id": "1ea81479-0b4c-4a54-ae1d-cea9540ec811",
+      "name": "Filter By Titles"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Ты - универсальный парсер новостей. Извлеки структурированную информацию из HTML контента.\n\nHTML контент:\n{{ $json.data }}\n\nИНСТРУКЦИИ:\n1. Извлеки ТОЛЬКО основной текст новости, исключив навигацию, рекламу, комментарии, повторяющиеся элементы\n2. Если есть заголовок - извлеки его\n3. Если есть автор - извлеки\n4. Если есть дата публикации - извлеки в машиночитаемом формате\n5. Верни результат в JSON формате:\n\n{\n  \"title\": \"заголовок новости\",\n  \"author\": \"автор или null\",\n  \"publication_date\": \"дата в формате YYYY-MM-DD или null\", \n  \"content\": \"полный основной текст новости\",\n  \"success\": true/false\n}\n\nВАЖНО:\n- Работай только с предоставленным HTML\n- Не придумывай информацию\n- Если не можешь извлечь поле - используй null\n- Для content убери все HTML теги, оставь только чистый текст",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2384,
+        -1056
+      ],
+      "id": "6d86ccd6-3a14-484f-aa13-c199abfe55e1",
+      "name": "AI HTML Parser"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"title\": \"заголовок новости\",\n  \"author\": \"автор или null\",\n  \"publication_date\": \"дата в формате YYYY-MM-DD или null\", \n  \"content\": \"полный основной текст новости\",\n  \"success\": true\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2480,
+        -832
+      ],
+      "id": "ee0d4c6b-8fc4-450c-b129-3aeba9685236",
+      "name": "Structured Output Site Parser"
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        2352,
+        -832
+      ],
+      "id": "eef7220b-54e7-4efc-a1de-4cf26e8a0229",
+      "name": "HTML Parser Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "dwy4CvjfeiziHkR0",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.newsLink }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2128,
+        -1056
+      ],
+      "id": "6c4841aa-3ccc-4596-9a93-c5be0c3073a4",
+      "name": "HTML Get"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fe899dfa-0159-404b-be80-3a67b0a7cc95",
+              "leftValue": "={{ $json.output.hotness }}",
+              "rightValue": 0.6,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        3104,
+        -1056
+      ],
+      "id": "f39db19b-2bb3-4a83-9927-df5cc1e9d880",
+      "name": "Hot Filter"
+    },
+    {
+      "parameters": {
+        "url": "https://www.investing.com/rss/news_14.rss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -384,
+        -1024
+      ],
+      "id": "19d5c20c-1e70-4e85-9558-5fcdbb1f11d4",
+      "name": "InvestingEconomy.com"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5a5f14ee-991f-4195-85a9-4859f3e0633a",
+              "name": "newsCreator",
+              "value": "={{ $json.creator }}",
+              "type": "string"
+            },
+            {
+              "id": "0cf958df-37db-46f6-ac8e-d9b14f572197",
+              "name": "newsTitle",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "ba06d90c-1739-4aaa-957d-9e427b47add0",
+              "name": "newsLink",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "54922f64-572e-4ddb-8125-1d86336dfca0",
+              "name": "newsDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -1024
+      ],
+      "id": "7ab2bcbe-1609-4ad1-b3fa-f205c25f06af",
+      "name": "Investing Economy"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5a5f14ee-991f-4195-85a9-4859f3e0633a",
+              "name": "newsCreator",
+              "value": "=ЦБ России",
+              "type": "string"
+            },
+            {
+              "id": "0cf958df-37db-46f6-ac8e-d9b14f572197",
+              "name": "newsTitle",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "ba06d90c-1739-4aaa-957d-9e427b47add0",
+              "name": "newsLink",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "54922f64-572e-4ddb-8125-1d86336dfca0",
+              "name": "newsDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -1216
+      ],
+      "id": "12e3ea0a-28ca-4496-83ae-27bc04c18476",
+      "name": "CBR News"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5a5f14ee-991f-4195-85a9-4859f3e0633a",
+              "name": "newsCreator",
+              "value": "=ЦБ России",
+              "type": "string"
+            },
+            {
+              "id": "0cf958df-37db-46f6-ac8e-d9b14f572197",
+              "name": "newsTitle",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "ba06d90c-1739-4aaa-957d-9e427b47add0",
+              "name": "newsLink",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "54922f64-572e-4ddb-8125-1d86336dfca0",
+              "name": "newsDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -1408
+      ],
+      "id": "418ef8f2-9f6f-437b-9576-25ce7bfbbe4f",
+      "name": "CBR Press"
+    },
+    {
+      "parameters": {
+        "url": "http://www.cbr.ru/rss/RssPress",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -384,
+        -1408
+      ],
+      "id": "511576c1-bbb8-41dd-a1c0-7f670dcc28d3",
+      "name": "CbrPress.ru"
+    },
+    {
+      "parameters": {
+        "url": "http://www.cbr.ru/rss/RssNews",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -384,
+        -1216
+      ],
+      "id": "39d1e68e-4826-4027-814c-de7483bb9cce",
+      "name": "CbrNews.ru"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1504,
+        -1232
+      ],
+      "id": "e4e44ead-0b7d-4c1f-834b-f4716a751bb3",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "oUdmMAPgt7hPnOWC",
+          "mode": "list",
+          "cachedResultName": "Articles",
+          "cachedResultUrl": "/projects/53vtU9N8PtfaSI4i/datatables/oUdmMAPgt7hPnOWC"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "link",
+              "keyValue": "={{ $('Filter By Titles').item.json.newsLink }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "link": "={{ $('Filter By Titles').item.json.newsLink }}",
+            "date": "={{ $('Filter By Titles').item.json.newsDate }}",
+            "title": "={{ $('Filter By Titles').item.json.newsTitle }}",
+            "hotness": "={{ $json.output.hotness }}",
+            "why_now": "={{ $json.output.why_now }}",
+            "companies": "={{ Array.isArray($json.output.entities.companies) ? $json.output.entities.companies.join(\", \") : $json.output.entities.companies }}",
+            "countries": "={{ Array.isArray($json.output.entities.countries) ? $json.output.entities.countries.join(\", \") : $json.output.entities.countries }}",
+            "sectors": "={{ Array.isArray($json.output.entities.sectors) ? $json.output.entities.sectors.join(\", \") : $json.output.entities.sectors }}",
+            "lead": "={{ $json.output.draft.lead }}",
+            "bullet_1": "={{ $json.output.draft.bullets[0] }}",
+            "bullet_2": "={{ $json.output.draft.bullets[1] }}",
+            "bullet_3": "={{ $json.output.draft.bullets[2] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "hotness",
+              "displayName": "hotness",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "why_now",
+              "displayName": "why_now",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "companies",
+              "displayName": "companies",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "countries",
+              "displayName": "countries",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "sectors",
+              "displayName": "sectors",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "lead",
+              "displayName": "lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "bullet_1",
+              "displayName": "bullet_1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "bullet_2",
+              "displayName": "bullet_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "bullet_3",
+              "displayName": "bullet_3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        3280,
+        -1056
+      ],
+      "id": "9e162403-be93-4314-aa02-e36f3d911095",
+      "name": "Upsert row(s)"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "F13nzZcuIioB5Edo",
+          "mode": "list",
+          "cachedResultName": "Filtered Links",
+          "cachedResultUrl": "/projects/53vtU9N8PtfaSI4i/datatables/F13nzZcuIioB5Edo"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -832,
+        -1232
+      ],
+      "id": "8c5daeec-83ef-47b6-a4bf-f481d4a88442",
+      "name": "Get row(s)",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        2560,
+        -624
+      ],
+      "id": "40d46391-2198-4491-9a19-ef61f8c34dce",
+      "name": "Parser Model1",
+      "credentials": {
+        "openRouterApi": {
+          "id": "dwy4CvjfeiziHkR0",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fd5d9891-fdaf-4b07-88df-96f7df088b2f",
+              "name": "newsCreator",
+              "value": "={{ $json.newsCreator }}",
+              "type": "string"
+            },
+            {
+              "id": "f8465799-6976-4dbb-b805-b8a93a9d7128",
+              "name": "newsTitle",
+              "value": "={{ $json.newsTitle }}",
+              "type": "string"
+            },
+            {
+              "id": "03ad29de-40e9-4d4e-83a7-5e8551238690",
+              "name": "newsLink",
+              "value": "={{ $json.newsLink }}",
+              "type": "string"
+            },
+            {
+              "id": "a82737e9-7698-4484-a815-002f80439c7c",
+              "name": "newsDate",
+              "value": "={{ $json.newsDate }}",
+              "type": "string"
+            },
+            {
+              "id": "dc097662-9757-409a-afa5-9de9df15ce9a",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1904,
+        -1056
+      ],
+      "id": "c57ed7d7-17bb-459e-abcc-9103cd8185be",
+      "name": "Actual News"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "oUdmMAPgt7hPnOWC",
+          "mode": "list",
+          "cachedResultName": "Articles",
+          "cachedResultUrl": "/projects/53vtU9N8PtfaSI4i/datatables/oUdmMAPgt7hPnOWC"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "date",
+              "condition": "gte",
+              "keyValue": "={{ $json.startDate }}"
+            }
+          ]
+        },
+        "limit": 20
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -832,
+        -416
+      ],
+      "id": "de8fd955-53aa-45e8-8131-8fdc5b69c878",
+      "name": "Get Actual News",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "F13nzZcuIioB5Edo",
+          "mode": "list",
+          "cachedResultName": "Filtered Links",
+          "cachedResultUrl": "/projects/53vtU9N8PtfaSI4i/datatables/F13nzZcuIioB5Edo"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "link": "={{ $json.newsLink }}"
+          },
+          "matchingColumns": [
+            "link"
+          ],
+          "schema": [
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        736,
+        -1376
+      ],
+      "id": "e35ba883-c514-4e81-bed3-b8a1655002ce",
+      "name": "Insert row"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "086104a8-8415-4bd5-8e99-6a9eaecee41b",
+              "leftValue": "={{ $('TableLinks').item.json.link }}",
+              "rightValue": "={{ $json.newsLink }}",
+              "operator": {
+                "type": "array",
+                "operation": "notContains",
+                "rightType": "any"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        512,
+        -1120
+      ],
+      "id": "5da0ace8-457d-4b39-b4e3-4fe028fcddb7",
+      "name": "Links Filter"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "78e6c1a1-3246-44dd-812a-7c47bc34195c",
+              "leftValue": "={{ $json.newsDate }}",
+              "rightValue": "={{ $('SubstractDate').item.json.startDate }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "afterOrEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        -1120
+      ],
+      "id": "092be352-0fe4-4917-b96e-70b0250da8c9",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "link"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        -1232
+      ],
+      "id": "cdf5fc7b-b864-481e-9fcd-7968b1c8a15d",
+      "name": "TableLinks"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -1280,
+        -1232
+      ],
+      "id": "38681118-4c0f-4f1f-9cf5-39043dfd09b4",
+      "name": "CurrentDate"
+    },
+    {
+      "parameters": {
+        "operation": "subtractFromDate",
+        "magnitude": "={{ $json.currentDate }}",
+        "timeUnit": "hours",
+        "duration": 1,
+        "outputFieldName": "startDate",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -1056,
+        -1232
+      ],
+      "id": "9d2929ef-2c06-444f-b27c-c1c07b9510e3",
+      "name": "SubstractDate"
+    },
+    {
+      "parameters": {
+        "url": "https://lenta.ru/rss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -384,
+        -1600
+      ],
+      "id": "e34e56db-f9ef-4efd-bfde-fd886846b4e2",
+      "name": "Lenta.ru"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5a5f14ee-991f-4195-85a9-4859f3e0633a",
+              "name": "newsCreator",
+              "value": "={{ $json.creator }}",
+              "type": "string"
+            },
+            {
+              "id": "0cf958df-37db-46f6-ac8e-d9b14f572197",
+              "name": "newsTitle",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "ba06d90c-1739-4aaa-957d-9e427b47add0",
+              "name": "newsLink",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "54922f64-572e-4ddb-8125-1d86336dfca0",
+              "name": "newsDate",
+              "value": "={{ $json.isoDate }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -1600
+      ],
+      "id": "0c7cb2d0-98a2-44f9-b60b-6815862be43b",
+      "name": "Lenta"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8df31439-cd3a-493e-981e-0a6dae461cc1",
+              "leftValue": "={{ $json.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -608,
+        -336
+      ],
+      "id": "c733c855-87ac-49c7-aa43-51ca932cce25",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger Start').item.json.message.chat.id }}",
+        "text": "=*❌ За выбранное время не появилось новых \"горячих\" новостей!*",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "Markdown"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -352,
+        -240
+      ],
+      "id": "96922ef6-aa45-4bb3-ab36-a5cbeca96da3",
+      "name": "Send a text message Null",
+      "webhookId": "25b788cf-1a20-45c6-9517-70dedc510906",
+      "credentials": {
+        "telegramApi": {
+          "id": "qY1l1NcrKFDRHokc",
+          "name": "KizilRadarBot"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "If time": {
+      "main": [
+        [
+          {
+            "node": "Convert Time",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If /start",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If /start": {
+      "main": [
+        [
+          {
+            "node": "Send Time Variants",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Start Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Summarizer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger Start": {
+      "main": [
+        [
+          {
+            "node": "If time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BiggerPockets.com": {
+      "main": [
+        [
+          {
+            "node": "BiggerPockets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert Time": {
+      "main": [
+        [
+          {
+            "node": "Get Actual News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Summarizer",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Summarizer": {
+      "main": [
+        [
+          {
+            "node": "Hot Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vedomosti.ru": {
+      "main": [
+        [
+          {
+            "node": "Vedomosti",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vedomosti": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "BiggerPockets": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 5
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate Titles": {
+      "main": [
+        [
+          {
+            "node": "AI Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Filter",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Parser Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Title Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Title Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Filter",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Filter": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Filter By Titles",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter By Titles": {
+      "main": [
+        [
+          {
+            "node": "Actual News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Site Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI HTML Parser",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Parser Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI HTML Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML Get": {
+      "main": [
+        [
+          {
+            "node": "AI HTML Parser",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI HTML Parser": {
+      "main": [
+        [
+          {
+            "node": "AI Summarizer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hot Filter": {
+      "main": [
+        [
+          {
+            "node": "Upsert row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "InvestingEconomy.com": {
+      "main": [
+        [
+          {
+            "node": "Investing Economy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Investing Economy": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "CbrPress.ru": {
+      "main": [
+        [
+          {
+            "node": "CBR Press",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CbrNews.ru": {
+      "main": [
+        [
+          {
+            "node": "CBR News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CBR Press": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "CBR News": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "CurrentDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "TableLinks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Site Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actual News": {
+      "main": [
+        [
+          {
+            "node": "HTML Get",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Actual News": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Insert row": {
+      "main": [
+        []
+      ]
+    },
+    "Links Filter": {
+      "main": [
+        [
+          {
+            "node": "Insert row",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter By Titles",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Aggregate Titles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Links Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TableLinks": {
+      "main": [
+        [
+          {
+            "node": "Lenta.ru",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "CbrPress.ru",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "CbrNews.ru",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "InvestingEconomy.com",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Vedomosti.ru",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "BiggerPockets.com",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CurrentDate": {
+      "main": [
+        [
+          {
+            "node": "SubstractDate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SubstractDate": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lenta.ru": {
+      "main": [
+        [
+          {
+            "node": "Lenta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lenta": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a text message Result",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a text message Null",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7aa505f0-6945-46eb-b104-ff6a83abb276",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4b9f6835a17b9fed5abdd2c27ff15d7d3151a83653190c8eb36283ab09fa5f15"
+  },
+  "id": "dExXYeGy3EM7kLu1",
+  "tags": []
+}
