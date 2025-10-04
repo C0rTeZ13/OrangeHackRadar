@@ -350,7 +350,7 @@
     {
       "parameters": {
         "chatId": "={{ $('Telegram Trigger Start').item.json.message.chat.id }}",
-        "text": "=*{{ $json.title }}*\n\n🔥 *Оценка \"горячести\": {{ $json.hotness }}*\n\n🕔 *Почему сейчас?*\n{{ $json.why_now }}\n\n🔑 *Ключевые сущности*\nКомпании: {{ $json.companies && $json.companies.length > 0 ? $json.companies : \"отсутствуют\" }}\nСтраны: {{ $json.countries && $json.countries.length > 0 ? $json.countries : \"отсутствуют\" }}\nСектора экономики: {{ $json.sectors && $json.sectors.length > 0 ? $json.sectors : \"отсутствуют\" }}\n\n🔗 *Ссылка на источник*\n{{ $json.link }}\n\nℹ️ *Черновик новости*\n*{{ $json.lead }}*\n\n{{ $json.bullet_1 }}. {{ $json.bullet_2 }}. {{ $json.bullet_3 }}.",
+        "text": "=*{{ $json.title }}*\n\n🔥 *Оценка \"горячести\": {{ $json.hotness }}*\n\n📅 *Дата:* {{ $json.date.toLocaleString('ru-RU') }}\n\n🕔 *Почему сейчас?*\n{{ $json.why_now }}\n\n🔑 *Ключевые сущности*\nКомпании: {{ $json.companies && $json.companies.length > 0 ? $json.companies : \"отсутствуют\" }}\nСтраны: {{ $json.countries && $json.countries.length > 0 ? $json.countries : \"отсутствуют\" }}\nСектора экономики: {{ $json.sectors && $json.sectors.length > 0 ? $json.sectors : \"отсутствуют\" }}\n\n🔗 *Ссылка на источник*\n{{ $json.link }}\n\nℹ️ *Черновик новости*\n*{{ $json.lead }}*\n\n{{ $json.bullet_1 }}. {{ $json.bullet_2 }}. {{ $json.bullet_3 }}.",
         "additionalFields": {
           "appendAttribution": false,
           "parse_mode": "Markdown"
@@ -2001,7 +2001,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "7aa505f0-6945-46eb-b104-ff6a83abb276",
+  "versionId": "b50d7749-1d5c-443d-aa89-431506206913",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "4b9f6835a17b9fed5abdd2c27ff15d7d3151a83653190c8eb36283ab09fa5f15"
